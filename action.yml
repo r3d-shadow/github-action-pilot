@@ -27,6 +27,7 @@ runs:
         python-version: '3.11'
 
     - name: Install git-pilot CLI
+      shell: bash
       run: pip install https://github.com/r3d-shadow/git-pilot/releases/download/v0.1.3/git_pilot-0.1.3-py3-none-any.whl
 
     - name: Run git-pilot

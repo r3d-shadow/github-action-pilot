@@ -61,9 +61,13 @@ name: Git Pilot Sync
 
 on:
   push:
+    branches:
+      - main
     paths:
-      - .github/git-pilot/values.yaml
-      - .github/git-pilot/templates/**
+      - templates/**
+
+permissions:
+  contents: write
 
 jobs:
   sync:
@@ -72,19 +76,19 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Git Pilot
-        uses: r3d-shadow/github-action-pilot@v0.0.1
+        uses: r3d-shadow/github-action-pilot@v0.1.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          template_dir: .github/git-pilot/templates
-          state_file: .git-pilot-state.json
-          values: .github/git-pilot/values.yaml
+          token: ${{ secrets.GIT_TOKEN }}
+          template_dir: templates
+          state_file: templates/.git-pilot-state.json
+          values: templates/values.yaml
 
       - name: Commit updated state file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .git-pilot-state.json
-          git commit -m "chore: update Git Pilot state file" || echo "No changes to commit"
+          git commit -m "chore: update Git Pilot state file"
           git push
 ```
 
