@@ -1,0 +1,40 @@
+name: 'Github Action Pilot'
+description: 'Sync GitHub Actions workflows across repositories using git-pilot CLI'
+author: 'Safeer S'
+branding:
+  icon: 'repeat'
+  color: 'blue'
+inputs:
+  token:
+    description: 'GitHub token to push changes'
+    required: true
+  values:
+    description: 'Path to the config YAML with repo/template settings'
+    required: true
+  template_dir:
+    description: 'Directory containing Jinja2 templates'
+    required: true
+  state_file:
+    description: 'Path to state file to track sync SHA'
+    required: false
+    default: '.git-pilot-state.json'
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install git-pilot CLI
+      run: pip install https://github.com/r3d-shadow/git-pilot/releases/download/v0.0.1/git_pilot-0.0.1-py3-none-any.whl
+
+    - name: Run git-pilot
+      shell: bash
+      run: |
+        git-pilot sync \
+          --provider github \
+          --token ${{ inputs.token }} \
+          --values ${{ inputs.values }} \
+          --template-dir ${{ inputs.template_dir }} \
+          --state-file ${{ inputs.state_file }}
