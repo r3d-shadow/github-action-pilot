@@ -37,4 +37,4 @@ runs:
           --token ${{ inputs.token }} \
           --values ${{ inputs.values }} \
           --template-dir ${{ inputs.template_dir }} \
-          --state-file ${{ inputs.state_file }}
+          --state-file ${{ inputs.state_file }} --non-interactive
