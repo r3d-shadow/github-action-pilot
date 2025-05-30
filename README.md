@@ -32,7 +32,7 @@ It's built to scale GitHub Actions management in organizations, keeping your pip
 Install the tool using pip:
 
 ```bash
-pip install https://github.com/r3d-shadow/git-pilot/releases/download/v0.0.1/git_pilot-0.0.1-py3-none-any.whl
+pip install https://github.com/r3d-shadow/git-pilot/releases/download/v0.1.3/git_pilot-0.1.3-py3-none-any.whl
 ```
 
 ---
