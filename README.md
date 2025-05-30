@@ -56,7 +56,6 @@ This sets up a starter folder structure where you can customize the workflow .j2
 To automatically render and sync CI workflows on every template or value change, create this workflow in your repo:
 
 ```yaml
-# .github/workflows/git-pilot-sync.yml
 name: Git Pilot Sync
 
 on:
@@ -76,18 +75,18 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run Git Pilot
-        uses: r3d-shadow/github-action-pilot@v0.1.0
+        uses: r3d-shadow/github-action-pilot@v0.1.1
         with:
           token: ${{ secrets.GIT_TOKEN }}
           template_dir: templates
           state_file: templates/.git-pilot-state.json
-          values: templates/values.yaml
+          values: templates/values.yml
 
       - name: Commit updated state file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .git-pilot-state.json
+          git add templates/.git-pilot-state.json
           git commit -m "chore: update Git Pilot state file"
           git push
 ```
