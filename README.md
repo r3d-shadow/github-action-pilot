@@ -102,6 +102,8 @@ jobs:
 
 > ✅ This workflow uses the `git-pilot` sync engine to keep your repo’s workflows consistent and versioned.
 
+![Demo GIF](https://github.com/r3d-shadow/git-pilot/blob/main/docs/assets/demo.gif)
+
 ---
 
 ## 🧩 Configuration (`values.yml`)
