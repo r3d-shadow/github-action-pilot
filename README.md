@@ -83,8 +83,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Git Pilot
-        uses: r3d-shadow/github-action-pilot@v0.1.1
+      - name: Github Action Pilot
+        uses: r3d-shadow/github-action-pilot@v0.2.1
         with:
           token: ${{ secrets.GIT_TOKEN }}
           template_dir: templates
