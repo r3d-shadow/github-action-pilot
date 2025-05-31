@@ -1,8 +1,19 @@
 # 🚀 GitHub Action Pilot
 
-![License](https://img.shields.io/github/license/your-org/github-action-pilot)
+![License](https://img.shields.io/github/license/r3d-shadow/github-action-pilot)
 
 > **Templated CI/CD Workflow Syncing Across GitHub Repositories — Helm-style.**
+
+---
+
+## 🔗 Project Repository
+
+This project is part of the broader [`git-pilot`](https://github.com/r3d-shadow/git-pilot) ecosystem — a powerful CLI tool for templated, multi-repo CI/CD sync.
+
+**GitHub Repository:**
+[https://github.com/r3d-shadow/github-action-pilot](https://github.com/r3d-shadow/github-action-pilot)
+**Main `git-pilot` CLI Repo:**
+[https://github.com/r3d-shadow/git-pilot](https://github.com/r3d-shadow/git-pilot)
 
 ---
 
@@ -10,50 +21,48 @@
 
 **GitHub Action Pilot** is a developer-first CLI and GitHub Action that lets you **sync centralized, templated workflows** across multiple GitHub repositories using a **Helm-like architecture**.
 
-It's built to scale GitHub Actions management in organizations, keeping your pipelines DRY, versioned, and consistent.
+It's built to scale GitHub Actions management in organizations, keeping your pipelines DRY, versioned, and consistent. It leverages the powerful [`git-pilot`](https://github.com/r3d-shadow/git-pilot) engine under the hood.
 
 ---
 
 ## 🚀 Key Features
 
-- **Multi‑Repository Sync**: Apply one or more workflow templates to any number of repositories with a single command.
-- **Helm‑Style Templating**: Supports `.tpl` macros, includes, and dynamic variable injection.
-- **Per‑Repository Overrides**: Customize branches, commit messages, paths, variables, and template selection per repository.
-- **Regex‑Driven Template Selection**: Use patterns to precisely control which templates apply to which repositories.
-- **Interactive Change Preview**: Before applying changes, see a side-by-side comparison of created, updated, and deleted files with toggles and highlights.
-- **Non-interactive mode** for automation & CI/CD
-- **State Management**: Tracks previously synced workflows and automatically cleans up obsolete files.
-- **Extensible Provider Model**: Built-in support for GitHub, with support for other platforms planned.
+* **Multi‑Repository Sync**: Apply one or more workflow templates to any number of repositories with a single command.
+* **Helm‑Style Templating**: Supports `.tpl` macros, includes, and dynamic variable injection.
+* **Per‑Repository Overrides**: Customize branches, commit messages, paths, variables, and template selection per repository.
+* **Regex‑Driven Template Selection**: Use patterns to precisely control which templates apply to which repositories.
+* **Interactive Change Preview**: Before applying changes, see a side-by-side comparison of created, updated, and deleted files with toggles and highlights.
+* **Non-interactive mode** for automation & CI/CD.
+* **State Management**: Tracks previously synced workflows and automatically cleans up obsolete files.
+* **Extensible Provider Model**: Built-in support for GitHub, with support for other platforms planned.
 
 ---
 
 ## 📦 Installation
 
-Install the tool using pip:
+Install the CLI tool using pip (recommended if you want to run sync locally):
 
 ```bash
-pip install https://github.com/r3d-shadow/git-pilot/releases/download/v0.1.3/git_pilot-0.1.3-py3-none-any.whl
+pip install git-pilot
 ```
+
+The GitHub Action itself requires no install—just reference it in your workflow as shown below.
 
 ---
 
 ## Usage
 
-## 🚀 Usage
+### 🧱 1. Bootstrap Template Directory (Optional)
 
-### 🧱 1. Bootstrap Template Directory (Only if needed)
-
-If you haven't already created templates, you can scaffold a starter structure locally:
+If you haven't created templates yet, bootstrap a starter structure:
 
 ```bash
 git-pilot init --template-dir templates
 ```
 
-This sets up a starter folder structure where you can customize the workflow .j2 templates and the values.yml file to match your specific CI/CD requirements.
-
 ### 🤖 2. Enable Auto-Sync via GitHub Actions
 
-To automatically render and sync CI workflows on every template or value change, create this workflow in your repo:
+Add this workflow in your repo to automatically sync workflows on template or config changes:
 
 ```yaml
 name: Git Pilot Sync
@@ -91,64 +100,40 @@ jobs:
           git push
 ```
 
-> ✅ This workflow ensures your repo’s CI workflows stay consistent with centrally maintained templates — while tracking sync history via `.git-pilot-state.json`.
-
-### Options:
-
-| Flag          | Description                            |
-| ------------- | -------------------------------------- |
-| `token`     | GitHub Personal Access Token           |
-| `template_dir` | Path to the root template directory    |
-| `values`    | Path to the config file (`values.yml`) |
+> ✅ This workflow uses the `git-pilot` sync engine to keep your repo’s workflows consistent and versioned.
 
 ---
 
 ## 🧩 Configuration (`values.yml`)
 
-The configuration file defines global defaults and per-repo overrides for:
+Define global defaults and per-repo overrides for branches, commit messages, target directories, regex patterns for template selection, and variables.
 
-* Branch name
-* Commit message
-* Target directory for rendered templates
-* Regex patterns for template selection
-* Variables to inject into templates
-
-See the [Configuration Reference](https://github.com/r3d-shadow/git-pilot/blob/main/docs/configuration.md) for a detailed breakdown.
+Detailed config docs are available here:
+[https://github.com/r3d-shadow/git-pilot/blob/main/docs/configuration.md](https://github.com/r3d-shadow/git-pilot/blob/main/docs/configuration.md)
 
 ---
 
 ## 🧠 Templating
 
-`git-pilot` supports Helm-style rendering using Jinja2, including:
+Uses the same Helm-style Jinja2 rendering engine as [`git-pilot`](https://github.com/r3d-shadow/git-pilot), supporting:
 
-* Custom delimiters to avoid conflicts with GitHub Actions syntax
-* Shared macro files and reusable partial templates
-* Built-in helper functions like `indent`, `to_yaml`, `tpl()`, etc.
+* Custom delimiters to avoid syntax conflicts
+* Shared macro files and reusable partials
+* Helper functions like `indent`, `to_yaml`, `tpl()`
 
-See the [Templating Guide](https://github.com/r3d-shadow/git-pilot/blob/main/docs/templating.md) for structure and usage examples.
+See the templating guide:
+[https://github.com/r3d-shadow/git-pilot/blob/main/docs/templating.md](https://github.com/r3d-shadow/git-pilot/blob/main/docs/templating.md)
 
 ---
 
 ## 💾 State Management
 
-A local JSON state file tracks:
-
-* Which templates were applied to which repositories and branches
-* SHA of the rendered content to detect changes
-* Obsolete workflows to remove when templates are no longer matched
-
-This ensures safe, idempotent operations and automatic cleanup.
+Tracks applied templates, branches, and rendered SHA in a JSON file to ensure safe syncs and cleanup.
 
 ---
 
 ## 🧪 Interactive Comparison Viewer
 
-Before applying changes, `git-pilot` presents a full summary:
-
-* **Created**: New files to be added
-* **Updated**: Modified files with side-by-side diffs
-* **Deleted**: Stale or obsolete files to be removed
-
-You can visually inspect changes before confirming. Nothing is pushed until confirmed.
+Before applying changes, review all created, updated, and deleted files with inline diffs and toggles. Nothing is pushed until you confirm.
 
 ---
